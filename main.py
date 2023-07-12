@@ -25,14 +25,6 @@ def load_data(file):
     grouped_data = data.groupby(['page', 'month_year'])['clicks'].sum().reset_index()
     grouped_data['clicks'] = grouped_data['clicks'].round(0).astype(int)
     
-    # Create a column with clicks history for each page
-    clicks_history = grouped_data.groupby('page')['clicks'].apply(list).reset_index()
-    clicks_history.columns = ['page', 'clicks_history']
-
-    # Calculate the total clicks for each page
-    total_clicks = grouped_data.groupby('page')['clicks'].sum().reset_index()
-    total_clicks.columns = ['page', 'total_clicks']
-    
     # Estimate clicks for the full current month
     last_month = grouped_data['month_year'].max()
     days_passed = (pd.Timestamp.now() - pd.Timestamp(last_month.start_time)).days
@@ -41,6 +33,14 @@ def load_data(file):
     current_month_real_clicks.columns = ['page', 'month_year', 'real_clicks_current_month']
     grouped_data.loc[grouped_data['month_year'] == last_month, 'clicks'] = (grouped_data['clicks'] / days_passed * total_days).round(0).astype(int)
 
+    # Create a column with clicks history for each page using projected clicks
+    clicks_history = grouped_data.groupby('page')['clicks'].apply(list).reset_index()
+    clicks_history.columns = ['page', 'clicks_history']
+    
+    # Calculate the total clicks for each page
+    total_clicks = grouped_data.groupby('page')['clicks'].sum().reset_index()
+    total_clicks.columns = ['page', 'total_clicks']
+    
     # Calculate the trend for each page as percentage change
     trend = grouped_data.groupby('page').apply(lambda x: LinearRegression().fit(np.arange(len(x)).reshape(-1, 1), x['clicks'].values).coef_[0] / x['clicks'].mean() * 100).reset_index()
     trend.columns = ['page', 'trend_percentage']
@@ -58,7 +58,7 @@ def load_data(file):
     pivot_data = pd.merge(pivot_data, trend, on='page')
 
     # Rename the last month column
-    last_month_column = str(pivot_data.columns[-5])
+    last_month_column = str(pivot_data.columns[-6])
     pivot_data = pivot_data.rename(columns={last_month_column: last_month_column + ' (projected clicks)'})
 
     return pivot_data
