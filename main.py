@@ -68,13 +68,31 @@ def main():
     
     if page == "Main page":
         st.title('Main Page')
-        # Content of the main page goes here
+        st.write('''
+        This is the main page of the application. Please select 'Content Decay Overview' from the sidebar 
+        to upload your Google Search Console data and get insights about the performance of different URLs.
+        ''')
     else:
         st.title('Content Decay Overview')
+        st.write('''
+        ## Welcome to the Content Decay Overview!
+        This page helps you understand how the URLs of your website have been performing over time. 
+        You need to upload a CSV file containing your Google Search Console data. The file should have at 
+        least two columns: 'date' and 'clicks'. Other columns will be ignored.
+        ''')
         
         uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
         if uploaded_file is not None:
+            st.write("Processing your data, please wait...")
             data = load_data(uploaded_file)
+            st.write('''
+            The table below shows:
+            - The 'page' column indicates the URL.
+            - The 'clicks_history' column shows a line chart of clicks over time for each URL.
+            - The 'total_clicks' column shows the total number of clicks received by each URL.
+            - The 'real_clicks_current_month' column shows the actual number of clicks received in the current month.
+            - The 'trend_percentage' column shows the trend of clicks over time for each URL (expressed as a percentage change per period).
+            ''')
             st.dataframe(
                 data.style.applymap(color_gradient, subset=["trend_percentage"]),
                 column_config={
@@ -89,6 +107,12 @@ def main():
                 },
                 hide_index=True,
             )
+            st.write('''
+            ## Interpreting the results
+            URLs with a green trend have seen an increase in clicks over time, 
+            while those with a red trend have seen a decrease. URLs with a yellow trend 
+            are stable, i.e., their number of clicks has not changed significantly over time.
+            ''')
 
 if __name__ == "__main__":
     main()
