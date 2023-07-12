@@ -35,7 +35,8 @@ def load_data(file):
     
     # Create a pivot table with pages as rows and months as columns
     pivot_data = grouped_data.pivot(index='page', columns='month_year', values='clicks').reset_index()
-    pivot_data = pivot_data.fillna(0).astype(int)
+    numeric_columns = pivot_data.select_dtypes(include=[np.number]).columns
+    pivot_data[numeric_columns] = pivot_data[numeric_columns].fillna(0).astype(int)
     
     # Merge the pivot table with clicks history and trend
     pivot_data = pd.merge(pivot_data, clicks_history, on='page')
