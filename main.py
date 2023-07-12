@@ -55,7 +55,7 @@ def load_data(file):
     pivot_data = pd.merge(pivot_data, trend, on='page')
 
     # Rename the last month column
-    last_month_column = pivot_data.columns[-3]
+    last_month_column = pivot_data.columns[-4]
     pivot_data = pivot_data.rename(columns={last_month_column: last_month_column + ' (current month)'})
 
     return pivot_data
