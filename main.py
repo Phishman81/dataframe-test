@@ -1,6 +1,8 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
+from sklearn.linear_model import LinearRegression
 
 def load_data(file):
     data = pd.read_csv(file)
@@ -14,21 +16,17 @@ def load_data(file):
     clicks_history = grouped_data.groupby('page')['clicks'].apply(list).reset_index()
     clicks_history.columns = ['page', 'clicks_history']
     
+    # Calculate the trend for each page
+    trend = grouped_data.groupby('page').apply(lambda x: LinearRegression().fit(np.arange(len(x)).reshape(-1, 1), x['clicks'].values).coef_[0]).reset_index()
+    trend.columns = ['page', 'trend']
+    
     # Create a pivot table with pages as rows and months as columns
     pivot_data = grouped_data.pivot(index='page', columns='month_year', values='clicks').reset_index()
     pivot_data = pivot_data.fillna(0)
     
-    # Merge the pivot table with clicks history
+    # Merge the pivot table with clicks history and trend
     pivot_data = pd.merge(pivot_data, clicks_history, on='page')
-
-    # Calculate the expected clicks for the current month based on the average of the previous months
-    pivot_data['Expected Clicks in current month'] = pivot_data.iloc[:, 1:-2].mean(axis=1)
-    
-    # Calculate the deviation for each month
-    months = grouped_data['month_year'].unique()
-    for month in months:
-        pivot_data[str(month) + ' deviation'] = pivot_data[month] - pivot_data['Expected Clicks in current month']
-        pivot_data[str(month) + ' % deviation'] = pivot_data[str(month) + ' deviation'] / pivot_data['Expected Clicks in current month'] * 100
+    pivot_data = pd.merge(pivot_data, trend, on='page')
 
     return pivot_data
 
@@ -49,6 +47,11 @@ def main():
                 column_config={
                     "clicks_history": st.column_config.LineChartColumn(
                         "Clicks over time"
+                    ),
+                    "trend": st.column_config.NumberColumn(
+                        "Trend",
+                        help="Trend of clicks over time (slope of linear regression line)",
+                        format="%f",
                     ),
                 },
                 hide_index=True,
