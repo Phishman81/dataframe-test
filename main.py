@@ -16,9 +16,9 @@ def load_data(file):
     clicks_history = grouped_data.groupby('page')['clicks'].apply(list).reset_index()
     clicks_history.columns = ['page', 'clicks_history']
     
-    # Calculate the trend for each page
-    trend = grouped_data.groupby('page').apply(lambda x: LinearRegression().fit(np.arange(len(x)).reshape(-1, 1), x['clicks'].values).coef_[0]).reset_index()
-    trend.columns = ['page', 'trend']
+    # Calculate the trend for each page as percentage change
+    trend = grouped_data.groupby('page').apply(lambda x: LinearRegression().fit(np.arange(len(x)).reshape(-1, 1), x['clicks'].values).coef_[0] / x['clicks'].mean() * 100).reset_index()
+    trend.columns = ['page', 'trend_percentage']
     
     # Create a pivot table with pages as rows and months as columns
     pivot_data = grouped_data.pivot(index='page', columns='month_year', values='clicks').reset_index()
@@ -43,14 +43,14 @@ def main():
         if uploaded_file is not None:
             data = load_data(uploaded_file)
             st.dataframe(
-                data,
+                data.style.background_gradient(subset=["trend_percentage"], cmap='coolwarm'),
                 column_config={
                     "clicks_history": st.column_config.LineChartColumn(
                         "Clicks over time"
                     ),
-                    "trend": st.column_config.NumberColumn(
-                        "Trend",
-                        help="Trend of clicks over time (slope of linear regression line)",
+                    "trend_percentage": st.column_config.NumberColumn(
+                        "Trend (%)",
+                        help="Trend of clicks over time (slope of linear regression line expressed as percentage change per period)",
                         format="%f",
                     ),
                 },
