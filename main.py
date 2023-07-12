@@ -38,7 +38,7 @@ def load_data(file):
     days_passed = (pd.Timestamp.now() - pd.Timestamp(last_month.start_time)).days
     total_days = monthrange(last_month.start_time.year, last_month.start_time.month)[1]
     current_month_real_clicks = grouped_data[grouped_data['month_year'] == last_month].copy()
-    current_month_real_clicks.columns = ['page', 'real_clicks_current_month']
+    current_month_real_clicks.columns = ['page', 'month_year', 'real_clicks_current_month']
     grouped_data.loc[grouped_data['month_year'] == last_month, 'clicks'] = (grouped_data['clicks'] / days_passed * total_days).round(0).astype(int)
 
     # Calculate the trend for each page as percentage change
@@ -54,7 +54,7 @@ def load_data(file):
     # Merge the pivot table with clicks history, total clicks, real clicks of current month and trend
     pivot_data = pd.merge(pivot_data, clicks_history, on='page')
     pivot_data = pd.merge(pivot_data, total_clicks, on='page')
-    pivot_data = pd.merge(pivot_data, current_month_real_clicks, on='page', how='left')
+    pivot_data = pd.merge(pivot_data, current_month_real_clicks[['page', 'real_clicks_current_month']], on='page', how='left')
     pivot_data = pd.merge(pivot_data, trend, on='page')
 
     # Rename the last month column
