@@ -21,7 +21,8 @@ def load_data(file):
     data['month_year'] = data['date'].dt.to_period('M')
 
     # Group by page and month_year, and calculate the sum of clicks
-    grouped_data = data.groupby(['page', 'month_year'])['clicks'].sum().reset_index().round(0)
+    grouped_data = data.groupby(['page', 'month_year'])['clicks'].sum().reset_index()
+    grouped_data['clicks'] = grouped_data['clicks'].round(0).astype(int)
     
     # Create a column with clicks history for each page
     clicks_history = grouped_data.groupby('page')['clicks'].apply(list).reset_index()
@@ -34,7 +35,7 @@ def load_data(file):
     
     # Create a pivot table with pages as rows and months as columns
     pivot_data = grouped_data.pivot(index='page', columns='month_year', values='clicks').reset_index()
-    pivot_data = pivot_data.fillna(0)
+    pivot_data = pivot_data.fillna(0).astype(int)
     
     # Merge the pivot table with clicks history and trend
     pivot_data = pd.merge(pivot_data, clicks_history, on='page')
@@ -63,7 +64,7 @@ def main():
                     "trend_percentage": st.column_config.NumberColumn(
                         "Trend (%)",
                         help="Trend of clicks over time (slope of linear regression line expressed as percentage change per period)",
-                        format="%f",
+                        format="%d",
                     ),
                 },
                 hide_index=True,
