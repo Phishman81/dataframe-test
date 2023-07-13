@@ -99,17 +99,19 @@ def main():
 
             st.write('''
             ## Interpreting the results
-            URLs with a green trend have seen an increase in clicks over time, 
-            while those with a red trend have seen a decrease. URLs with a yellow trend 
-            are stable, i.e., their number of clicks has not changed significantly over time.
+            st.write(f"The file contains {total_pages} URLs/pages.")
+            st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
+            average_trend = data['trend_percentage'].mean()
+            st.write(f"The average trend of all pages is {average_trend}.")
             ''')
             st.write('''
             The table below shows:
             - The 'page' column indicates the URL.
-            - The 'clicks_history' column shows a line chart of clicks over time for each URL.
-            - The 'total_clicks' column shows the total number of clicks received by each URL.
-            - The 'real_clicks_current_month' column shows the actual number of clicks received in the current month.
-            - The 'trend_percentage' column shows the trend of clicks over time for each URL (expressed as a percentage change per period).
+            - The clicks accumulated per months in the dataset
+            - The last month in the dataset contains the forecasted clicks by the end of it for an ongoing month (based on previous url performance)
+            - The 'real_clicks_current_month' column shows the actual number of clicks received in the current month so far.
+            - The 'total_clicks' column shows the total number of clicks received by each URL, including forecasted clicks for the ongoing month.
+            - The 'trend_percentage' column shows the trend of clicks over time for each URL (expressed as a percentage change per month).
             ''')
             st.dataframe(
                 data.style.applymap(color_gradient, subset=["trend_percentage"]),
@@ -130,11 +132,7 @@ def main():
             stable_pages = len(data[(data['trend_percentage'] >= -10) & (data['trend_percentage'] <= 10)])
             declining_pages = len(data[data['trend_percentage'] < -10])
 
-            st.write(f"We analyzed a total of {total_pages} URLs/pages.")
-            st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
-            average_trend = data['trend_percentage'].mean()
-            st.write(f"The average trend of all pages is {average_trend}.")
-
+           
             top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
             st.write("The top 10 pages with the highest total clicks are:")
             st.dataframe(top_10_pages[['page', 'total_clicks', 'trend_percentage']].style.applymap(color_gradient, subset=["trend_percentage"]), column_config={ "clicks_history": st.column_config.LineChartColumn("Clicks over time") })
