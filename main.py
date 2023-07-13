@@ -97,13 +97,15 @@ def main():
             st.write("Processing your data, please wait...")
             data = load_data(uploaded_file)
 
-            st.write('''
-            ## Interpreting the results
+            st.write("## Interpreting the results")
+            total_pages = len(data['page'].unique())
+            improving_pages = len(data[data['trend_percentage'] > 10])
+            stable_pages = len(data[(data['trend_percentage'] >= -10) & (data['trend_percentage'] <= 10)])
+            declining_pages = len(data[data['trend_percentage'] < -10])
             st.write(f"The file contains {total_pages} URLs/pages.")
             st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
             average_trend = data['trend_percentage'].mean()
             st.write(f"The average trend of all pages is {average_trend}.")
-            ''')
             st.write('''
             The table below shows:
             - The 'page' column indicates the URL.
