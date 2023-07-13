@@ -104,6 +104,15 @@ def main():
             declining_pages = len(data[data['trend_percentage'] < -10])
             st.write(f"The file contains {total_pages} URLs/pages.")
             st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
+    st.write("## Trend Overview")
+    st.write("This pie chart shows the proportion of pages with declining, stable, and improving trends.")
+    st.pyplot(
+        pd.DataFrame(
+            [declining_pages, stable_pages, improving_pages],
+            index=['Declining', 'Stable', 'Improving'],
+            columns=['count']
+        ).plot(kind='pie', y='count', autopct='%1.1f%%', figsize=(5, 5))
+    )
             average_trend = data['trend_percentage'].mean()
             st.write(f"The average trend of all pages is {average_trend}.")
             st.write('''
