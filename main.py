@@ -119,27 +119,27 @@ def main():
                 hide_index=True,
             )
             total_pages = len(data['page'].unique())
-improving_pages = len(data[data['trend_percentage'] > 10])
-stable_pages = len(data[(data['trend_percentage'] >= -10) & (data['trend_percentage'] <= 10)])
-declining_pages = len(data[data['trend_percentage'] < -10])
+            improving_pages = len(data[data['trend_percentage'] > 10])
+            stable_pages = len(data[(data['trend_percentage'] >= -10) & (data['trend_percentage'] <= 10)])
+            declining_pages = len(data[data['trend_percentage'] < -10])
 
-st.write(f"We analyzed a total of {total_pages} URLs/pages.")
-st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
+            st.write(f"We analyzed a total of {total_pages} URLs/pages.")
+            st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
 
-top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
-st.write("The top 10 pages with the highest total clicks are:")
-st.write(top_10_pages[['page', 'total_clicks', 'trend_percentage']])
+            top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
+            st.write("The top 10 pages with the highest total clicks are:")
+            st.write(top_10_pages[['page', 'total_clicks', 'trend_percentage']])
 
-best_improving_page = data[data['trend_percentage'] == data['trend_percentage'].max()]
-st.write("The page with the most significant positive trend is:")
-st.write(best_improving_page[['page', 'trend_percentage']])
+            best_improving_page = data[data['trend_percentage'] == data['trend_percentage'].max()]
+            st.write("The page with the most significant positive trend is:")
+            st.write(best_improving_page[['page', 'trend_percentage']])
 
-worst_declining_page = data[data['trend_percentage'] == data['trend_percentage'].min()]
-st.write("The page with the most significant negative trend is:")
-st.write(worst_declining_page[['page', 'trend_percentage']])
+            worst_declining_page = data[data['trend_percentage'] == data['trend_percentage'].min()]
+            st.write("The page with the most significant negative trend is:")
+            st.write(worst_declining_page[['page', 'trend_percentage']])
 
-average_trend = data['trend_percentage'].mean()
-st.write(f"The average trend of all pages is {average_trend}.")
+            average_trend = data['trend_percentage'].mean()
+            st.write(f"The average trend of all pages is {average_trend}.")
 
 
             
