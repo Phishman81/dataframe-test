@@ -87,9 +87,10 @@ def main():
         st.title('Content Decay Overview')
         st.write('''
         ## Welcome to the Content Decay Overview!
-        This page helps you understand how the URLs of your website have been performing over time. 
-        You need to upload a CSV file containing your Google Search Console data. The file must have at 
-        least 3 columns: 'page','date' and 'clicks'. Other columns will be ignored.
+        This page helps you understand how the URLs of your website have been performing over time.
+        You can easily identify pages that used to perform but now are lacking clicks and need an update.
+        How it works: You need to upload a CSV file containing your Google Search Console data. The file must have at 
+        least 3 columns: 'page','date' and 'clicks'. Other columns will be ignored. To collect the data use the Google Search Console API, or the "Search Analytics for Sheets" Chrome Extension.
         ''')
         
         uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
