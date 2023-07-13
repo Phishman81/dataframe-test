@@ -97,17 +97,10 @@ def main():
             st.write("Processing your data, please wait...")
             data = load_data(uploaded_file)
 
-            st.write(f"We analyzed a total of {total_pages} URLs/pages.")
-            st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
-            average_trend = data['trend_percentage'].mean()
-            st.write(f"The average trend of all pages is {average_trend}.")
-
+           
             st.write('''
-            ## Interpreting the results
-            (f"We analyzed a total of {total_pages} URLs/pages.")
-            (f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
-            average_trend = data['trend_percentage'].mean()
-            (f"The average trend of all pages is {average_trend}.")
+            ## Summary
+            
             URLs with a green trend have seen an increase in clicks over time, 
             while those with a red trend have seen a decrease. URLs with a yellow trend 
             are stable, i.e., their number of clicks has not changed significantly over time.
