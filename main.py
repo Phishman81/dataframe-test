@@ -105,11 +105,11 @@ def main():
             ''')
             st.write('''
             The table below shows:
-            - The 'page' column indicates the URL.
-            - The 'clicks_history' column shows a line chart of clicks over time for each URL.
-            - The 'total_clicks' column shows the total number of clicks received by each URL.
+            - The total monthly clicks per page, the last month in the set (if still ongoing) shows the forecasted clicks.
             - The 'real_clicks_current_month' column shows the actual number of clicks received in the current month.
-            - The 'trend_percentage' column shows the trend of clicks over time for each URL (expressed as a percentage change per period).
+            - The 'total_clicks' column shows the total number of clicks received by each URL.
+            
+            - The 'trend_percentage' column shows the trend of clicks over time for each URL (expressed as a percentage change per month).
             ''')
             st.dataframe(
                 data.style.applymap(color_gradient, subset=["trend_percentage"]),
