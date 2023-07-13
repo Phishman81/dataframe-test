@@ -137,15 +137,15 @@ def main():
 
             top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
             st.write("The top 10 pages with the highest total clicks are:")
-            st.write(top_10_pages[['page', 'total_clicks', 'trend_percentage']])
+            st.dataframe(top_10_pages[['page', 'total_clicks', 'trend_percentage']])
 
             best_improving_page = data[data['trend_percentage'] == data['trend_percentage'].max()]
             st.write("The page with the most significant positive trend is:")
-            st.write(best_improving_page[['page', 'trend_percentage']])
+            st.dataframe(best_improving_page[['page', 'trend_percentage']])
 
             worst_declining_page = data[data['trend_percentage'] == data['trend_percentage'].min()]
             st.write("The page with the most significant negative trend is:")
-            st.write(worst_declining_page[['page', 'trend_percentage']])
+            st.dataframe(worst_declining_page[['page', 'trend_percentage']])
 
          
 if __name__ == "__main__":
