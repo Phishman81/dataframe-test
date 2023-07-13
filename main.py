@@ -132,6 +132,8 @@ def main():
 
             st.write(f"We analyzed a total of {total_pages} URLs/pages.")
             st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
+            average_trend = data['trend_percentage'].mean()
+            st.write(f"The average trend of all pages is {average_trend}.")
 
             top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
             st.write("The top 10 pages with the highest total clicks are:")
@@ -145,17 +147,6 @@ def main():
             st.write("The page with the most significant negative trend is:")
             st.write(worst_declining_page[['page', 'trend_percentage']])
 
-            average_trend = data['trend_percentage'].mean()
-            st.write(f"The average trend of all pages is {average_trend}.")
-
-
-            
-            st.write('''
-            ## Interpreting the results
-            URLs with a green trend have seen an increase in clicks over time, 
-            while those with a red trend have seen a decrease. URLs with a yellow trend 
-            are stable, i.e., their number of clicks has not changed significantly over time.
-            ''')
-
+         
 if __name__ == "__main__":
     main()
