@@ -137,7 +137,7 @@ def main():
 
             top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
             st.write("The top 10 pages with the highest total clicks are:")
-            st.dataframe(top_10_pages[['page', 'total_clicks', 'trend_percentage']])
+            st.dataframe(top_10_pages[['page', 'total_clicks', 'trend_percentage']].style.applymap(color_gradient, subset=["trend_percentage"]), column_config={ "clicks_history": st.column_config.LineChartColumn("Clicks over time") })
 
             best_improving_pages = data.sort_values(by='trend_percentage', ascending=False).head(10)
             st.write("The page with the most significant positive trend is:")
