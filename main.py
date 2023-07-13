@@ -138,15 +138,15 @@ def main():
             st.write(f"The average trend of all pages is {average_trend}.")
 
             top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
-            st.write("The top 10 pages with the highest total clicks are:")
+            st.write("The trend of the top 10 best clicked pages:")
             st.dataframe(top_10_pages[['page', 'total_clicks', 'trend_percentage']].style.applymap(color_gradient, subset=["trend_percentage"]), column_config={ "clicks_history": st.column_config.LineChartColumn("Clicks over time") })
 
             best_improving_pages = data.sort_values(by='trend_percentage', ascending=False).head(10)
-            st.write("The page with the most significant positive trend is:")
+            st.write("Top 10 most positive trend:")
             st.dataframe(best_improving_pages[['page', 'total_clicks', 'trend_percentage']].style.applymap(color_gradient, subset=["trend_percentage"]), column_config={ "clicks_history": st.column_config.LineChartColumn("Clicks over time") })
 
             worst_declining_pages = data.sort_values(by='trend_percentage', ascending=True).head(10)
-            st.write("The page with the most significant negative trend is:")
+            st.write("Top 10 most negative trend:")
             st.dataframe(worst_declining_pages[['page', 'total_clicks', 'trend_percentage']].style.applymap(color_gradient, subset=["trend_percentage"]), column_config={ "clicks_history": st.column_config.LineChartColumn("Clicks over time") })
 
          
