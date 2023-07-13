@@ -18,6 +18,17 @@ def color_gradient(val):
 
 def load_data(file):
     data = pd.read_csv(file)
+    data.columns = map(str.lower, data.columns)  # convert all column names to lowercase
+    
+    page_variants = ['address', 'adresse', 'url']
+    for variant in page_variants:
+        if variant in data.columns:
+            data = data.rename(columns={variant: 'page'})
+    
+    required_columns = ['date', 'clicks', 'page']
+    if not set(required_columns).issubset(data.columns):
+        raise ValueError(f"The CSV file must contain the following columns: {required_columns}")
+
     data['date'] = pd.to_datetime(data['date'])
     data['month_year'] = data['date'].dt.to_period('M')
 
