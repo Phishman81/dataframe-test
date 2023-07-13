@@ -113,7 +113,7 @@ def main():
             columns=['count']
         ).plot(kind='pie', y='count', autopct='%1.1f%%', figsize=(5, 5))
     )
-            average_trend = data['trend_percentage'].mean()
+        average_trend = data['trend_percentage'].mean()
             st.write(f"The average trend of all pages is {average_trend}.")
             st.write('''
             The table below shows:
