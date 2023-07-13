@@ -132,16 +132,8 @@ def main():
 
             st.write(f"We analyzed a total of {total_pages} URLs/pages.")
             st.write(f"From those pages, {declining_pages} see a strong decline, {stable_pages} are stable, and {improving_pages} are showing improvement.")
-            average_trend = round(data['trend_percentage'].mean(), 1)
-trend_message = "declining" if average_trend < 0 else "increasing" if average_trend > 0 else "stable"
-st.write(f"The average trend of all pages is {average_trend}%, which means the overall clicks of all the pages are {trend_message} by {abs(average_trend)}% every month.")
-st.write("Here is a histogram of the trends for all pages:")
-fig, ax = plt.subplots()
-ax.hist(data['trend_percentage'], bins=30, color='skyblue', alpha=0.7)
-ax.set_title('Histogram of Trends')
-ax.set_xlabel('Trend Percentage')
-ax.set_ylabel('Number of Pages')
-st.pyplot(fig)
+            average_trend = data['trend_percentage'].mean()
+            st.write(f"The average trend of all pages is {average_trend}.")
 
             top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
             st.write("The top 10 pages with the highest total clicks are:")
