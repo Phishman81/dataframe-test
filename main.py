@@ -88,8 +88,8 @@ def main():
         st.write('''
         ## Welcome to the Content Decay Overview!
         This page helps you understand how the URLs of your website have been performing over time. 
-        You need to upload a CSV file containing your Google Search Console data. The file should have at 
-        least two columns: 'date' and 'clicks'. Other columns will be ignored.
+        You need to upload a CSV file containing your Google Search Console data. The file must have at 
+        least three columns: 'page','date' and 'clicks'. Other columns will be ignored.
         ''')
         
         uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
