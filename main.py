@@ -139,13 +139,13 @@ def main():
             st.write("The top 10 pages with the highest total clicks are:")
             st.dataframe(top_10_pages[['page', 'total_clicks', 'trend_percentage']])
 
-            best_improving_page = data[data['trend_percentage'] == data['trend_percentage'].max()]
+            best_improving_pages = data.sort_values(by='trend_percentage', ascending=False).head(10)
             st.write("The page with the most significant positive trend is:")
-            st.dataframe(best_improving_page[['page', 'trend_percentage']])
+            st.dataframe(best_improving_pages[['page', 'total_clicks', 'trend_percentage']].style.applymap(color_gradient, subset=["trend_percentage"]), column_config={ "clicks_history": st.column_config.LineChartColumn("Clicks over time") })
 
-            worst_declining_page = data[data['trend_percentage'] == data['trend_percentage'].min()]
+            worst_declining_pages = data.sort_values(by='trend_percentage', ascending=True).head(10)
             st.write("The page with the most significant negative trend is:")
-            st.dataframe(worst_declining_page[['page', 'trend_percentage']])
+            st.dataframe(worst_declining_pages[['page', 'total_clicks', 'trend_percentage']].style.applymap(color_gradient, subset=["trend_percentage"]), column_config={ "clicks_history": st.column_config.LineChartColumn("Clicks over time") })
 
          
 if __name__ == "__main__":
