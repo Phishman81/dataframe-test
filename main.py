@@ -143,7 +143,7 @@ ax.set_xlabel('Trend Percentage')
 ax.set_ylabel('Number of Pages')
 st.pyplot(fig)
 
-            top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
+top_10_pages = data.sort_values(by='total_clicks', ascending=False).head(10)
             st.write("The top 10 pages with the highest total clicks are:")
             st.dataframe(top_10_pages[['page', 'total_clicks', 'trend_percentage']].style.applymap(color_gradient, subset=["trend_percentage"]), column_config={ "clicks_history": st.column_config.LineChartColumn("Clicks over time") })
 
